@@ -14,6 +14,9 @@ header{background:linear-gradient(135deg,var(--d),var(--p));color:#fff;padding:2
 #bar{display:flex;justify-content:space-between;font-weight:600;margin-bottom:.5rem}.tag{font-size:.8rem;color:#55657a}
 input[type=email],input[type=text]{width:100%;padding:.75rem;border:1px solid #c5cfdb;border-radius:8px;font-size:1rem;margin:.3rem 0}
 footer{font-size:.85rem;color:#55657a;padding:1.5rem 1.2rem;border-top:1px solid #dde3ea}.res{border-left:4px solid #ccc;padding:.5rem .8rem;margin:.6rem 0;background:#fff}
+.rep{font-size:.85rem;color:#0b5cab;background:none;border:0;padding:.3rem 0;cursor:pointer;text-decoration:underline}
+.mini{margin-top:.4rem;padding:.6rem;background:#f6f8fb;border-radius:8px}.mini textarea,.fb textarea,.mini input,.fb input[type=email]{width:100%;padding:.6rem;border:1px solid #c5cfdb;border-radius:8px;font-size:1rem;margin:.25rem 0;font-family:inherit}
+.fb{background:#fff;border-radius:12px;padding:1rem;margin:1rem 0;box-shadow:0 2px 10px #0001}.fb label{display:inline-block;margin:.2rem .6rem .2rem 0}.msg{font-size:.9rem}
 </style></head><body>
 <header><div class="w"><div class="tag" style="color:#cfe0f5">LicenciaAZ · DEMO – no afiliado al ROC ni a PSI</div>
 <h1>Aprueba tu examen de contratista de Arizona — en español</h1>
@@ -50,4 +53,25 @@ const j=await r.json().catch(()=>({}));if(!r.ok||j.success===false||j.success===
 m.className='ok';m.textContent='¡Gracias por registrarte! Te avisaremos por correo en cuanto abra el curso completo.';f.reset()}
 catch(_){m.className='bad';m.textContent='Lo sentimos, no pudimos registrar tu correo. Revisa tu conexión e inténtalo de nuevo en unos minutos.'}
 finally{b.disabled=false}return false}
+
+const EP='https://formsubmit.co/ajax/exnardigital@gmail.com';
+async function post(d,btn,msg,okText){btn.disabled=true;msg.className='msg';msg.textContent='Enviando...';
+try{const r=await fetch(EP,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(Object.assign(d,{_captcha:'false',_template:'table'}))});
+const j=await r.json().catch(()=>({}));if(!r.ok||j.success===false||j.success==='false')throw 0;msg.className='msg ok';msg.textContent=okText;return true}
+catch(_){msg.className='msg bad';msg.textContent='Lo sentimos, no se pudo enviar. Inténtalo de nuevo en unos minutos.';btn.disabled=false;return false}}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+const _finish=finish;
+finish=function(){_finish();const out=$('out');const sc=(out.querySelector('#score')||{}).textContent||'';
+out.querySelectorAll('.res').forEach((el,k)=>{const q=Q[k];const w=document.createElement('div');
+w.innerHTML=`<button type="button" class="rep">¿Ves un error? Repórtalo</button><div class="mini" hidden><textarea rows="2" placeholder="¿Qué está mal? (opcional)"></textarea><input type="email" placeholder="Tu correo (opcional)"><button type="button" class="btn s">Enviar reporte</button> <span class="msg"></span></div>`;
+el.appendChild(w);const box=w.querySelector('.mini');w.querySelector('.rep').onclick=()=>{box.hidden=!box.hidden};
+const b=box.querySelector('.btn');b.onclick=async()=>{const ok=await post({_subject:'Reporte de pregunta - Q'+q.id,question_id:String(q.id),question_text:q.pregunta,selected_answer:ans[k]==null?'sin responder':q.opciones[ans[k]],comment:box.querySelector('textarea').value.trim(),email:box.querySelector('input').value.trim()},b,box.querySelector('.msg'),'¡Gracias! Revisaremos esta pregunta.');if(ok)b.disabled=true}});
+const fb=document.createElement('form');fb.className='fb';fb.id='fbf';
+fb.innerHTML=`<h3>¿Qué te pareció el examen?</h3><div>${[1,2,3,4,5].map(n=>`<label><input type="radio" name="rating" value="${n}"> ${n}</label>`).join('')}<span class="tag">(1 = malo, 5 = excelente)</span></div>
+<textarea name="comment" rows="3" placeholder="Comentarios o sugerencias (opcional)"></textarea><input type="email" name="email" placeholder="Tu correo (opcional)">
+<p style="margin:.4rem 0"><b>¿Pagarías por un curso completo en español?</b><br>${['Sí','Tal vez','No'].map(v=>`<label><input type="radio" name="would_pay" value="${v}"> ${v}</label>`).join('')}</p>
+<input type="hidden" name="score" value="${esc(sc.replace(/\s*—.*/,'').replace('Resultado: ',''))}"><button type="submit" class="btn s">Enviar comentario</button> <span class="msg"></span>`;
+out.insertBefore(fb,out.querySelector('.res'));
+fb.onsubmit=async e=>{e.preventDefault();const g=n=>(fb.querySelector(`[name=${n}]:checked`)||{}).value||'';const b=fb.querySelector('button[type=submit]');
+const ok=await post({_subject:'Comentario del examen',rating:g('rating'),comment:fb.comment.value.trim(),email:fb.email.value.trim(),would_pay:g('would_pay'),score:fb.score.value},b,fb.querySelector('.msg'),'¡Gracias por tus comentarios! Nos ayudan a mejorar el curso.');if(ok)b.disabled=true}};
 </script></body></html>
