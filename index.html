@@ -30,10 +30,9 @@ footer{font-size:.85rem;color:#55657a;padding:1.5rem 1.2rem;border-top:1px solid
 <p><button class="btn s" id="prev" onclick="go(-1)">Anterior</button> <button class="btn s" onclick="go(1)" id="next">Siguiente</button> <button class="btn" onclick="finish()">Terminar</button></p></div>
 <div id="out" hidden></div></div></section>
 <section id="signup"><div class="w card"><h2>Recibe el curso completo primero</h2><p>Déjanos tu correo y te avisamos cuando abra el curso (con precio especial de lanzamiento).</p>
-<!-- TODO: reemplazar action con el endpoint del servicio de formularios (p.ej. https://formspree.io/f/XXXX o formulario de ConvertKit). Actualmente no envía nada. -->
-<form id="f" action="#TODO-form-endpoint" method="POST" onsubmit="return sub(event)">
-<input type="text" name="nombre" placeholder="Tu nombre"><input type="email" name="email" required placeholder="tu@correo.com">
-<input type="text" name="oficio" placeholder="Tu oficio (ej. framing, techos)"><button class="btn" type="submit">Quiero ser avisado</button></form><p id="fm" class="ok"></p></div></section>
+<form id="f" action="https://formsubmit.co/exnardigital@gmail.com" method="POST" onsubmit="return sub(event)">
+<input type="text" name="name" placeholder="Tu nombre (opcional)"><input type="email" name="email" required placeholder="tu@correo.com">
+<input type="text" name="trade" placeholder="Tu oficio (ej. framing, techos)"><button class="btn" type="submit">Quiero ser avisado</button></form><p id="fm" class="ok"></p></div></section>
 <footer><div class="w"><p><b>Aviso:</b> LicenciaAZ es un recurso educativo independiente. No está afiliado, patrocinado ni aprobado por el Arizona Registrar of Contractors (ROC) ni por PSI Services. Las preguntas son de práctica y no son preguntas reales del examen. Verifica siempre los requisitos vigentes en roc.az.gov y en el boletín oficial de PSI.</p><p>© 2026 LicenciaAZ</p></div></footer>
 <script>
 const Q=[
@@ -744,5 +743,12 @@ q.opciones.forEach((o,k)=>{const b=document.createElement('button');b.className=
 function go(d){i=Math.max(0,Math.min(Q.length-1,i+d));render()}
 function finish(){clearInterval(timer);let c=0;let h='';Q.forEach((q,k)=>{const g=ans[k]===q.respuesta;if(g)c++;h+=`<div class="res" style="border-color:${g?'#137333':'#b3261e'}"><b>${k+1}. ${q.pregunta}</b><br><span class="${g?'ok':'bad'}">${g?'✔ Correcta':'✘ Tu respuesta: '+(ans[k]==null?'sin responder':q.opciones[ans[k]])}</span><br>Respuesta: <b>${q.opciones[q.respuesta]}</b><br><small>${q.explicacion}</small></div>`});
 const p=Math.round(c/Q.length*100);$('run').hidden=1;$('out').hidden=0;$('out').innerHTML=`<h3 id="score">Resultado: ${c}/${Q.length} (${p}%) — ${p>=70?'<span class=ok>¡Aprobado!</span>':'<span class=bad>Sigue practicando</span>'}</h3><a class="btn" href="#signup">Quiero el curso completo</a>`+h}
-function sub(e){e.preventDefault();$('fm').textContent='¡Gracias! (Demo: el formulario aún no está conectado.)';return false}
+async function sub(e){e.preventDefault();const f=$('f'),m=$('fm'),b=f.querySelector('button');
+const d={email:f.email.value.trim(),name:f.elements['name'].value.trim(),trade:f.trade.value.trim(),_subject:'Nuevo registro - Examen Contratista AZ',_captcha:'false',_template:'table'};
+b.disabled=true;m.className='';m.textContent='Enviando...';
+try{const r=await fetch('https://formsubmit.co/ajax/exnardigital@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(d)});
+const j=await r.json().catch(()=>({}));if(!r.ok||j.success===false||j.success==='false')throw 0;
+m.className='ok';m.textContent='¡Gracias por registrarte! Te avisaremos por correo en cuanto abra el curso completo.';f.reset()}
+catch(_){m.className='bad';m.textContent='Lo sentimos, no pudimos registrar tu correo. Revisa tu conexión e inténtalo de nuevo en unos minutos.'}
+finally{b.disabled=false}return false}
 </script></body></html>
