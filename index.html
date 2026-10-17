@@ -35,28 +35,38 @@ a.sub{color:#fff;font-size:.95rem;display:inline-block;padding:.5rem 0;min-heigh
 #cm[hidden]{display:none}#cm .box{background:#fff;border-radius:14px;max-width:420px;width:100%;padding:1.3rem;box-shadow:0 10px 40px #0005}
 #cm h3{margin:.1rem 0 .6rem;color:#0f2a44}#cm .acts{display:flex;flex-direction:column;gap:.5rem;margin-top:1rem}@media(min-width:480px){#cm .acts{flex-direction:row-reverse}}
 #cm .btn{min-height:48px;flex:1}.btn.ghost{background:#fff;color:#b3261e;border:2px solid #b3261e}.btn:focus-visible,.opt:focus-visible{outline:3px solid #f2a900;outline-offset:2px}
+#pg{height:6px;background:#e3e9f0;border-radius:4px;margin:.2rem 0 .6rem;overflow:hidden}#pg i{display:block;height:100%;background:var(--a);width:0;transition:width .2s}
+.btn.lite{background:#fff;color:#0f2a44;border:2px solid #c5cfdb;font-weight:600}
+.cap{background:#fffaf0;border:2px solid var(--a);border-radius:12px;padding:1rem;margin:.6rem 0 1rem}.cap h3{margin:.1rem 0 .4rem;color:#0f2a44;font-size:1.1rem}.cap p{margin:.3rem 0}
+.cf{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}.cf input[type=email]{flex:1 1 220px;margin:0;min-height:48px}.cf select{flex:1 1 220px;min-height:48px;padding:.6rem;border:1px solid #c5cfdb;border-radius:8px;font-size:1rem;background:#fff;color:#1d2733}.cf .btn{min-height:48px;flex:1 1 220px}
+.skip{background:none;border:0;color:#0b5cab;text-decoration:underline;font-size:.95rem;padding:.6rem 0;min-height:44px;cursor:pointer}
+#hcap{background:#ffffff14;border:1px solid #ffffff40;border-radius:12px;padding:.8rem;margin:.4rem 0;max-width:520px}#hcap p{margin:.1rem 0 .5rem;color:#e6eef8;font-size:.95rem}#hcap .msg{color:#fff}#hcap .msg.bad{color:#ffd2cc}
+.topics{font-size:.9rem;color:#55657a;margin:.8rem 0 0}
+#sticky{display:none}@media(max-width:699px){#sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#0f2a44f2;padding:.6rem .8rem calc(.6rem + env(safe-area-inset-bottom));box-shadow:0 -4px 16px #0003;display:flex;transform:translateY(110%);transition:transform .2s}#sticky.on{transform:none}#sticky .btn{width:100%;min-height:48px}body{padding-bottom:76px}}
+.done{background:#e8f5ec;border-left:4px solid #137333;padding:.8rem;border-radius:8px;font-weight:600;color:#137333}
 </style></head><body>
-<header><div class="w"><div class="tag" style="color:#cfe0f5">LicenciaAZ · DEMO – no afiliado al ROC ni a PSI</div>
-<h1>Aprueba tu examen de contratista de Arizona — en español</h1>
-<p>Preparación para el examen de oficio (trade exam) residencial B / B-2 / KB-2: guías, preguntas de práctica y simulador cronometrado, todo explicado en tu idioma.</p>
-<button class="btn big" onclick="startNow()">Empezar examen gratis ▶</button>
-<p class="facts">✔ 50 preguntas &nbsp;✔ 60 minutos &nbsp;✔ Sin registrarte &nbsp;✔ Respuestas explicadas</p>
-<a class="sub" href="#signup">Avísenme cuando abra el curso completo</a></div></header>
-<section><div class="w"><h2>¿Por qué este curso?</h2><div class="grid">
+<header><div class="w"><div class="tag" style="color:#cfe0f5">LicenciaAZ · Recurso independiente – no afiliado al ROC ni a PSI</div>
+<h1>Examen de práctica GRATIS en español – Licencia de contratista de Arizona</h1>
+<p>50 preguntas de práctica para el examen de oficio (trade exam) residencial B / B-2 / KB-2, con la explicación de cada respuesta. Hazlo desde tu celular.</p>
+<button class="btn big" id="herostart" onclick="gcEv('cta-hero-start','Botón Empezar (hero)');startNow()">Empezar examen gratis ▶</button>
+<p class="facts">✔ 50 preguntas &nbsp;✔ Respuestas explicadas &nbsp;✔ Sin registrarte &nbsp;✔ Puedes pausar y seguir después</p>
+<a class="sub" href="#signup" id="hlink">🔔 Avísenme cuando abra el curso completo en español</a>
+<div id="hcap" hidden><p>Solo tu correo. Te avisamos cuando abra el curso completo (con precio especial de lanzamiento).</p><div data-cap="hero"></div></div></div></header>
+<section><div class="w"><h2>¿Qué incluye el examen gratis?</h2><div class="grid">
 <div class="card"><b>Todo en español</b><p>Explicaciones claras de concreto, carpintería, techos, seguridad OSHA y más.</p></div>
 <div class="card"><b>Basado en el temario oficial</b><p>Organizado según las áreas del examen publicadas por PSI: trabajo de sitio, concreto, mampostería, carpintería, protección térmica, puertas y ventanas, acabados y seguridad.</p></div>
-<div class="card"><b>Práctica con reloj</b><p>Simulador cronometrado y guías para marcar (tabbing) tus libros de referencia permitidos.</p></div>
-</div></div></section>
+<div class="card"><b>Práctica con reloj</b><p>Reloj de 60 minutos para practicar con tiempo. Tu avance se guarda en tu teléfono por 24 horas. Las guías para marcar (tabbing) tus libros de referencia vendrán en el curso completo.</p></div>
+</div><p class="topics"><b>Temas:</b> Trabajo de sitio · Concreto · Mampostería · Estructura metálica · Carpintería · Protección térmica y contra humedad · Puertas y ventanas · Acabados · Seguridad. Varias explicaciones citan su fuente (OSHA 29 CFR 1926, Arizona 811, ACI 318).</p></div></section>
 <section id="quiz"><div class="w card"><h2>Examen de prueba: 50 preguntas</h2>
 <div id="resume" class="fb" role="region" aria-live="polite" hidden style="border-left:4px solid #f2a900"><p id="rstxt" style="font-weight:600;margin:.2rem 0 .7rem"></p><button type="button" class="btn s" id="rsgo">Continuar</button> <button type="button" class="btn ghost" id="rsnew" style="color:#0f2a44;border-color:#0f2a44">Empezar de nuevo</button></div>
-<div id="intro"><p>Tienes <b>60 minutos</b>. Al final verás tu puntuación (se aprueba con 70%) y la explicación de cada pregunta. Funciona sin internet.</p><button class="btn s" onclick="start()">Comenzar</button></div>
-<div id="run" hidden><div id="bar"><span id="cnt"></span><span id="tm"></span></div><div class="tag" id="ar"></div><p id="qt" style="font-weight:600"></p><div id="ops"></div>
-<p><button class="btn s" id="prev" onclick="go(-1)">Anterior</button> <button class="btn s" onclick="go(1)" id="next">Siguiente</button> <button class="btn" onclick="askFinish()">Terminar</button></p></div>
+<div id="intro"><p>Tienes <b>60 minutos</b>. Al final verás tu puntuación (se aprueba con 70%) y la explicación de cada pregunta. Funciona sin internet. Si sales, puedes continuar después donde te quedaste.</p><button class="btn big" onclick="gcEv('cta-intro-start','Botón Comenzar (quiz)');start()">Comenzar ▶</button></div>
+<div id="run" hidden><div id="q10" class="cap" hidden role="region" aria-live="polite"></div><div id="bar"><span id="cnt"></span><span id="tm"></span></div><div id="pg" aria-hidden="true"><i></i></div><div class="tag" id="ar"></div><p id="qt" style="font-weight:600"></p><div id="ops"></div>
+<p><button class="btn lite" id="prev" onclick="go(-1)">◀ Anterior</button> <button class="btn" onclick="go(1)" id="next">Siguiente ▶</button> <button class="btn lite" id="finbtn" onclick="askFinish()">Terminar</button></p></div>
 <div id="out" hidden></div></div></section>
-<section id="signup"><div class="w card"><h2>Recibe el curso completo primero</h2><p>Déjanos tu correo y te avisamos cuando abra el curso (con precio especial de lanzamiento).</p>
-<form id="f" action="https://formsubmit.co/exnardigital@gmail.com" method="POST" onsubmit="return sub(event)">
-<label class="sr" for="fn">Nombre</label><input id="fn" type="text" name="name" autocomplete="name" placeholder="Tu nombre (opcional)"><label class="sr" for="fe">Correo electrónico</label><input id="fe" type="email" name="email" autocomplete="email" inputmode="email" required placeholder="tu@correo.com">
-<label class="sr" for="ft">Oficio</label><input id="ft" type="text" name="trade" placeholder="Tu oficio (ej. framing, techos)"><button class="btn" type="submit">Quiero ser avisado</button></form><p id="fm" class="ok"></p></div></section>
+<section id="signup"><div class="w card"><h2>Recibe aviso del curso completo en español</h2><p>Solo tu correo. Te avisamos cuando abra el curso (con precio especial de lanzamiento). Solo te escribiremos sobre el curso.</p>
+<div data-cap="bottom"></div>
+<noscript><form action="https://formsubmit.co/exnardigital@gmail.com" method="POST"><input type="email" name="email" required placeholder="tu@correo.com"><button class="btn" type="submit">Quiero ser avisado</button></form></noscript></div></section>
+<div id="sticky"><button type="button" class="btn" id="stbtn">Empezar examen gratis ▶</button></div>
 <div id="cm" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="cmt" aria-describedby="cmd">
 <h3 id="cmt">¿Terminar el examen?</h3><p id="cmd"></p><p id="cmtime" class="tag"></p>
 <div class="acts"><button type="button" class="btn s" id="cmno">Seguir respondiendo</button><button type="button" class="btn ghost" id="cmyes">Sí, terminar</button></div></div></div>
@@ -69,7 +79,7 @@ q.opciones.forEach((o,k)=>{const b=document.createElement('button');b.className=
 function go(d){i=Math.max(0,Math.min(Q.length-1,i+d));render()}
 function finish(){clearInterval(timer);let c=0;let h='';Q.forEach((q,k)=>{const g=ans[k]===q.respuesta;if(g)c++;h+=`<div class="res" style="border-color:${g?'#137333':'#b3261e'}"><b>${k+1}. ${q.pregunta}</b><br><span class="${g?'ok':'bad'}">${g?'✔ Correcta':'✘ Tu respuesta: '+(ans[k]==null?'sin responder':q.opciones[ans[k]])}</span><br>Respuesta: <b>${q.opciones[q.respuesta]}</b><br><small>${q.explicacion}</small></div>`});
 const p=Math.round(c/Q.length*100);$('run').hidden=1;$('out').hidden=0;$('out').innerHTML=`<h3 id="score">Resultado: ${c}/${Q.length} (${p}%) — ${p>=70?'<span class=ok>¡Aprobado!</span>':'<span class=bad>Sigue practicando</span>'}</h3><a class="btn" href="#signup">Quiero el curso completo</a>`+h}
-async function sub(e){e.preventDefault();const f=$('f'),m=$('fm'),b=f.querySelector('button');
+async function sub_legacy(e){e.preventDefault();const f=$('f'),m=$('fm'),b=f.querySelector('button');
 const d={email:f.email.value.trim(),name:f.elements['name'].value.trim(),trade:f.trade.value.trim(),_subject:'Nuevo registro - Examen Contratista AZ',_captcha:'false',_template:'table'};
 b.disabled=true;m.className='';m.textContent='Enviando...';
 try{const r=await fetch('https://formsubmit.co/ajax/exnardigital@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(d)});
@@ -129,5 +139,72 @@ $('rstxt').textContent=`¿Continuar donde te quedaste? (respondiste ${x} de ${Q.
 $('rsgo').onclick=()=>{$('resume').hidden=true;start();ans=s.ans;i=Math.min(Math.max(0,s.i|0),Q.length-1);t=s.t;
 $('tm').textContent='⏱ '+Math.floor(t/60)+':'+String(t%60).padStart(2,'0');render()};
 $('rsnew').onclick=()=>{clearSave();$('resume').hidden=true;i=0;t=3600;start()};})();
+</script><script>
+/* ===== Conversion layer: capture forms, Q10 checkpoint, sticky CTA, GoatCounter events ===== */
+const SIGNED='licenciaaz_signed_v1';
+const SRC=(()=>{try{const u=new URLSearchParams(location.search);return u.get('ref')||u.get('src')||u.get('utm_source')||u.get('utm_campaign')||''}catch(_){return ''}})();
+const gcQ=[];
+function gcEv(path,title){const e={path:path,title:title||path,event:true};
+if(window.goatcounter&&typeof window.goatcounter.count==='function'){try{window.goatcounter.count(e)}catch(_){}}else gcQ.push(e)}
+(function flush(n){if(window.goatcounter&&typeof window.goatcounter.count==='function'){while(gcQ.length){try{window.goatcounter.count(gcQ.shift())}catch(_){}}return}if(n<40)setTimeout(()=>flush(n+1),500)})(0);
+function isSigned(){try{return !!localStorage.getItem(SIGNED)}catch(_){return false}}
+function scoreNow(){const sc=($('score')||{}).textContent||'';return sc.replace(/\s*—.*/,'').replace('Resultado: ','')}
+const TRADES=['B / B-2 residencial general','KB-2 (dual)','Carpintería / framing','Techos (roofing)','Concreto / mampostería','Drywall / acabados','Handyman / remodelación','Otro'];
+function mkCap(where,btnText){const f=document.createElement('form');f.className='cf';f.noValidate=false;f.setAttribute('data-where',where);
+const id='e_'+where;
+f.innerHTML=`<label class="sr" for="${id}">Correo electrónico</label><input id="${id}" type="email" name="email" autocomplete="email" inputmode="email" required placeholder="tu@correo.com">
+<label class="sr" for="t_${where}">Oficio (opcional)</label><select id="t_${where}" name="trade"><option value="">Tu oficio (opcional)</option>${TRADES.map(t=>`<option>${t}</option>`).join('')}</select>
+<button class="btn" type="submit">${btnText||'Avísenme'}</button><span class="msg" role="status" style="flex-basis:100%"></span>`;
+let typed=false;f.email.addEventListener('input',()=>{if(!typed){typed=true;gcEv('signup-focus-'+where,'Empezó a escribir correo ('+where+')')}});
+f.onsubmit=async e=>{e.preventDefault();if(!f.email.checkValidity()){f.email.reportValidity();return}
+const b=f.querySelector('button[type=submit]');gcEv('signup-submit-'+where,'Envío de registro ('+where+')');
+const answered=(typeof ans!=='undefined'&&ans)?ans.filter(a=>a!=null).length:0;
+const ok=await post({_subject:'Nuevo registro - Examen Contratista AZ',email:f.email.value.trim(),trade:f.trade.value,placement:where,src:SRC,answered:String(answered),score:scoreNow()},b,f.querySelector('.msg'),'¡Listo! Te avisaremos por correo en cuanto abra el curso completo.');
+if(ok){gcEv('signup-ok-'+where,'Registro exitoso ('+where+')');try{localStorage.setItem(SIGNED,String(Date.now()))}catch(_){}
+f.email.disabled=true;f.trade.disabled=true;b.disabled=true;markSigned(where)}else gcEv('signup-error-'+where,'Error de registro ('+where+')')};
+return f}
+function markSigned(except){document.querySelectorAll('[data-cap]').forEach(el=>{if(el.getAttribute('data-cap')===except)return;el.innerHTML='<p class="done">✔ Ya estás registrado. Te avisaremos cuando abra el curso.</p>'});
+if(except!=='q10'){$('q10').hidden=true}updSticky()}
+function fillCaps(){document.querySelectorAll('[data-cap]').forEach(el=>{if(el.childElementCount)return;const w=el.getAttribute('data-cap');
+if(isSigned())el.innerHTML='<p class="done">✔ Ya estás registrado. Te avisaremos cuando abra el curso.</p>';else el.appendChild(mkCap(w,w==='results'?'Quiero el curso completo':'Avísenme'))})}
+fillCaps();
+// hero link: open inline mini form instead of jumping past the quiz
+$('hlink').addEventListener('click',e=>{e.preventDefault();const h=$('hcap');h.hidden=!h.hidden;if(!h.hidden){gcEv('signup-open-hero','Abrió registro (hero)');const inp=h.querySelector('input[type=email]');if(inp)inp.focus()}});
+
+// quiz events + Q10 checkpoint + progress bar + button emphasis
+let q10seen=false,q25seen=false,started=false;
+const _startC=start;start=function(){_startC();if(!started){started=true;gcEv('quiz-start','Empezó el examen')}updSticky()};
+const _renderC=render;render=function(){_renderC();
+const n=ans.filter(a=>a!=null).length;const bar=document.querySelector('#pg i');if(bar)bar.style.width=Math.round(n/Q.length*100)+'%';
+const last=i===Q.length-1;$('next').hidden=last;$('finbtn').className=last?'btn':'btn lite';
+if(i>=10&&!q10seen){q10seen=true;gcEv('quiz-q10','Llegó a la pregunta 11 (10 vistas)');showQ10()}
+if(i>=12&&!$('q10').hidden&&!$('q10').contains(document.activeElement))$('q10').hidden=true;
+if(i>=25&&!q25seen){q25seen=true;gcEv('quiz-q25','Llegó a la pregunta 26 (25 vistas)')}};
+function showQ10(){if(isSigned())return;let c=0;for(let k=0;k<10;k++)if(ans[k]===Q[k].respuesta)c++;
+const box=$('q10');box.innerHTML=`<h3>💪 ¡Ya llevas 10 de ${Q.length}! Vas con ${c} de 10 correctas.</h3><p>¿Quieres que te avisemos cuando abra el curso completo en español? Deja tu correo (opcional) y sigue con el examen.</p><div data-cap="q10"></div><button type="button" class="skip" id="q10skip">Ahora no, seguir con el examen ▶</button>`;
+fillCaps();box.hidden=false;$('q10skip').onclick=()=>{box.hidden=true;gcEv('q10-dismiss','Cerró el aviso de la pregunta 10');$('qt').scrollIntoView({block:'center'})};
+box.scrollIntoView({behavior:'smooth',block:'start'})}
+// resume event
+const _rsgo=$('rsgo').onclick;$('rsgo').onclick=()=>{gcEv('quiz-resume','Continuó un examen guardado');started=true;_rsgo();q10seen=i>=10;q25seen=i>=25};
+// finish: signup right under the score (not after 50 explanations)
+const _finC=finish;finish=function(){_finC();const out=$('out');const old=out.querySelector('a.btn[href="#signup"]');
+const p=parseInt((($('score')||{}).textContent.match(/\((\d+)%\)/)||[])[1]||'0',10);
+gcEv('quiz-finish','Terminó el examen');gcEv('quiz-finish-'+(p>=70?'pass':'fail'),'Terminó: '+(p>=70?'aprobado':'no aprobado'));
+const card=document.createElement('div');card.className='cap';
+card.innerHTML=`<h3>${p>=70?'¡Buen resultado!':'¡Sigue practicando!'} ¿Quieres el curso completo en español?</h3><p>Deja tu correo y te avisamos primero cuando abra (con precio especial de lanzamiento).</p><div data-cap="results"></div>`;
+if(old)old.replaceWith(card);else out.insertBefore(card,out.querySelector('.fb'));fillCaps();updSticky()};
+
+// sticky mobile CTA
+let heroVis=true,introVis=false,signupVis=false;
+function updSticky(){const st=$('sticky'),b=$('stbtn');if(!st)return;let show=false;const done=!$('out').hidden;
+if(!started&&!done){b.textContent='Empezar examen gratis ▶';show=!heroVis&&!introVis&&!$('intro').hidden}
+else if(done&&!isSigned()){b.textContent='🔔 Avísenme del curso completo';show=!signupVis}
+st.classList.toggle('on',show&&$('cm').hidden)}
+$('stbtn').onclick=()=>{if($('out').hidden){gcEv('cta-sticky-start','Botón Empezar (barra fija)');startNow()}else{gcEv('cta-sticky-signup','Botón Avísenme (barra fija)');const c=$('out').querySelector('[data-cap="results"]')||$('signup');c.scrollIntoView({behavior:'smooth',block:'center'})}};
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.target.id==='herostart')heroVis=e.isIntersecting;if(e.target.id==='intro')introVis=e.isIntersecting;if(e.target.id==='signup'||e.target.classList.contains('cap'))signupVis=e.isIntersecting});updSticky()});
+io.observe($('herostart'));io.observe($('intro'));io.observe($('signup'));
+new MutationObserver(()=>{const c=$('out').querySelector('.cap');if(c&&!c._o){c._o=1;io.observe(c)}}).observe($('out'),{childList:true})}
+addEventListener('scroll',updSticky,{passive:true});
+
 </script><script data-goatcounter="https://examen-contratista-az.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>
