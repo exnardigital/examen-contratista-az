@@ -63,7 +63,7 @@ a.sub{color:#fff;font-size:.95rem;display:inline-block;padding:.5rem 0;min-heigh
 <div id="run" hidden><div id="q10" class="cap" hidden role="region" aria-live="polite"></div><div id="bar"><span id="cnt"></span><span id="tm"></span></div><div id="pg" aria-hidden="true"><i></i></div><div class="tag" id="ar"></div><p id="qt" style="font-weight:600"></p><div id="ops"></div>
 <p><button class="btn lite" id="prev" onclick="go(-1)">◀ Anterior</button> <button class="btn" onclick="go(1)" id="next">Siguiente ▶</button> <button class="btn lite" id="finbtn" onclick="askFinish()">Terminar</button></p></div>
 <div id="out" hidden></div></div></section>
-<section id="signup"><div class="w card"><h2>Recibe gratis la guía PDF: 10 preguntas clave</h2><p>Solo tu correo. Te mandamos la guía por correo y te avisamos cuando abra el curso completo en español (con precio especial de lanzamiento). Solo te escribiremos sobre la guía y el curso.</p>
+<section id="signup"><div class="w card"><h2>Recibe gratis la guía PDF: 10 preguntas clave</h2><p>Solo tu correo. Descárgala al instante y te avisamos cuando abra el curso completo en español (con precio especial de lanzamiento). Solo te escribiremos sobre la guía y el curso.</p>
 <div data-cap="bottom"></div>
 <noscript><form action="https://formsubmit.co/exnardigital@gmail.com" method="POST"><input type="hidden" name="_subject" value="Nuevo registro - Examen Contratista AZ"><input type="hidden" name="placement" value="noscript"><input type="hidden" name="_autoresponse" value="¡Gracias por registrarte! Te avisaremos por correo cuando abra el curso completo en español. Descarga aquí tu guía gratis &quot;10 preguntas clave del examen de contratista de Arizona&quot;: https://exnardigital.github.io/examen-contratista-az/guia-10-preguntas.pdf"><input type="email" name="email" required placeholder="tu@correo.com"><button class="btn" type="submit">Enviarme la guía</button></form><p><a href="guia-10-preguntas.pdf">Descargar la guía</a></p></noscript></div></section>
 <div id="sticky"><button type="button" class="btn" id="stbtn">Empezar examen gratis ▶</button></div>
@@ -161,7 +161,7 @@ let typed=false;f.email.addEventListener('input',()=>{if(!typed){typed=true;gcEv
 f.onsubmit=async e=>{e.preventDefault();if(!f.email.checkValidity()){f.email.reportValidity();return}
 const b=f.querySelector('button[type=submit]');gcEv('signup-submit-'+where,'Envío de registro ('+where+')');
 const answered=(typeof ans!=='undefined'&&ans)?ans.filter(a=>a!=null).length:0;
-const ok=await post({_subject:'Nuevo registro - Examen Contratista AZ',email:f.email.value.trim(),trade:f.trade.value,placement:where,src:SRC,answered:String(answered),score:scoreNow(),_autoresponse:AUTORESP},b,f.querySelector('.msg'),'¡Listo! Te enviamos la guía a tu correo (revisa también spam). Te avisaremos cuando abra el curso completo.');
+const ok=await post({_subject:'Nuevo registro - Examen Contratista AZ',email:f.email.value.trim(),trade:f.trade.value,placement:where,src:SRC,answered:String(answered),score:scoreNow(),_autoresponse:AUTORESP},b,f.querySelector('.msg'),'¡Listo! Descarga tu guía aquí abajo 👇 Te avisaremos por correo cuando abra el curso completo.');
 if(ok){gcEv('signup-ok-'+where,'Registro exitoso ('+where+')');try{localStorage.setItem(SIGNED,String(Date.now()))}catch(_){}
 f.email.disabled=true;f.trade.disabled=true;b.disabled=true;f.appendChild(guiaLink(where));markSigned(where)}else gcEv('signup-error-'+where,'Error de registro ('+where+')')};
 return f}
@@ -185,7 +185,7 @@ if(i>=10&&!q10seen){q10seen=true;gcEv('quiz-q10','Llegó a la pregunta 11 (10 vi
 if(i>=12&&!$('q10').hidden&&!$('q10').contains(document.activeElement))$('q10').hidden=true;
 if(i>=25&&!q25seen){q25seen=true;gcEv('quiz-q25','Llegó a la pregunta 26 (25 vistas)')}};
 function showQ10(){if(isSigned())return;let c=0;for(let k=0;k<10;k++)if(ans[k]===Q[k].respuesta)c++;
-const box=$('q10');box.innerHTML=`<h3>💪 ¡Ya llevas 10 de ${Q.length}! Vas con ${c} de 10 correctas.</h3><p>Recibe gratis la guía PDF: 10 preguntas clave. Deja tu correo (opcional) y te la mandamos; también te avisamos cuando abra el curso completo. Luego sigue con el examen.</p><div data-cap="q10"></div><button type="button" class="skip" id="q10skip">Ahora no, seguir con el examen ▶</button>`;
+const box=$('q10');box.innerHTML=`<h3>💪 ¡Ya llevas 10 de ${Q.length}! Vas con ${c} de 10 correctas.</h3><p>Recibe gratis la guía PDF: 10 preguntas clave. Deja tu correo (opcional) y descárgala al instante; también te avisamos cuando abra el curso completo. Luego sigue con el examen.</p><div data-cap="q10"></div><button type="button" class="skip" id="q10skip">Ahora no, seguir con el examen ▶</button>`;
 fillCaps();box.hidden=false;$('q10skip').onclick=()=>{box.hidden=true;gcEv('q10-dismiss','Cerró el aviso de la pregunta 10');$('qt').scrollIntoView({block:'center'})};
 box.scrollIntoView({behavior:'smooth',block:'start'})}
 // resume event
@@ -195,7 +195,7 @@ const _finC=finish;finish=function(){_finC();const out=$('out');const old=out.qu
 const p=parseInt((($('score')||{}).textContent.match(/\((\d+)%\)/)||[])[1]||'0',10);
 gcEv('quiz-finish','Terminó el examen');gcEv('quiz-finish-'+(p>=70?'pass':'fail'),'Terminó: '+(p>=70?'aprobado':'no aprobado'));
 const card=document.createElement('div');card.className='cap';
-card.innerHTML=`<h3>${p>=70?'¡Buen resultado!':'¡Sigue practicando!'} Recibe gratis la guía PDF: 10 preguntas clave</h3><p>Deja tu correo y te la mandamos. También te avisamos primero cuando abra el curso completo en español (con precio especial de lanzamiento).</p><div data-cap="results"></div>`;
+card.innerHTML=`<h3>${p>=70?'¡Buen resultado!':'¡Sigue practicando!'} Recibe gratis la guía PDF: 10 preguntas clave</h3><p>Deja tu correo y descárgala al instante. También te avisamos primero cuando abra el curso completo en español (con precio especial de lanzamiento).</p><div data-cap="results"></div>`;
 if(old)old.replaceWith(card);else out.insertBefore(card,out.querySelector('.fb'));fillCaps();updSticky()};
 
 // sticky mobile CTA
