@@ -44,6 +44,11 @@ a.sub{color:#fff;font-size:.95rem;display:inline-block;padding:.5rem 0;min-heigh
 .topics{font-size:.9rem;color:#55657a;margin:.8rem 0 0}
 #sticky{display:none}@media(max-width:699px){#sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#0f2a44f2;padding:.6rem .8rem calc(.6rem + env(safe-area-inset-bottom));box-shadow:0 -4px 16px #0003;display:flex;transform:translateY(110%);transition:transform .2s}#sticky.on{transform:none}#sticky .btn{width:100%;min-height:48px}body{padding-bottom:76px}}
 .done{background:#e8f5ec;border-left:4px solid #137333;padding:.8rem;border-radius:8px;font-weight:600;color:#137333}
+.share{display:flex;flex-direction:column;gap:.5rem;margin:.7rem 0 1rem}
+.share .btn,.share-mini .btn{min-height:48px;width:100%;text-align:center}
+.share .status{font-size:.9rem;min-height:1.2em}
+.share-mini{margin:.2rem 0 0}
+.share-link{display:inline-flex;align-items:center;min-height:48px;font-weight:700;color:var(--p)}
 </style></head><body>
 <header><div class="w"><div class="tag" style="color:#cfe0f5">LicenciaAZ · Recurso independiente – no afiliado al ROC ni a PSI</div>
 <h1>Examen de práctica GRATIS en español – Licencia de contratista de Arizona</h1>
@@ -144,11 +149,45 @@ $('rsnew').onclick=()=>{clearSave();$('resume').hidden=true;i=0;t=3600;start()};
 </script><script>
 /* ===== Conversion layer: capture forms, Q10 checkpoint, sticky CTA, GoatCounter events ===== */
 const SIGNED='licenciaaz_signed_v1';
-const SRC=(()=>{try{const u=new URLSearchParams(location.search);return u.get('ref')||u.get('src')||u.get('utm_source')||u.get('utm_campaign')||''}catch(_){return ''}})();
+/* Facebook glues the next word onto ?src= ("fb-q4-g7Ahí"). Keep the leading
+   code of lowercase letters, digits, and hyphens; drop the rest. */
+function cleanCode(raw){const m=String(raw==null?'':raw).match(/^[a-z0-9]+(?:-[a-z0-9]+)*/);return m?m[0]:''}
+function normalizeCampaign(){
+  let params;try{params=new URLSearchParams(location.search)}catch(_){return ''}
+  let changed=false;
+  ['ref','src','source','utm_source','utm_campaign','campaign'].forEach(k=>{
+    if(!params.has(k))return;const raw=params.get(k)||'',cleaned=cleanCode(raw);
+    if(cleaned===raw)return;if(cleaned)params.set(k,cleaned);else params.delete(k);changed=true});
+  if(changed){const qs=params.toString();try{history.replaceState(history.state,'',location.pathname+(qs?'?'+qs:'')+location.hash)}catch(_){}}
+  return cleanCode(params.get('ref')||params.get('src')||params.get('utm_source')||params.get('utm_campaign')||'');
+}
+const SRC=normalizeCampaign();
+window.goatcounter=window.goatcounter||{};
+if(SRC)window.goatcounter.referrer=SRC;
+/* count() sends events with navigator.sendBeacon. When that returns true,
+   count.js skips its image fallback — and a thrown sendBeacon is swallowed
+   by a try/catch, so the event is lost. The /count endpoint is a GET pixel;
+   build the same URL (goatcounter.url) and send that. filter() still applies. */
 const gcQ=[];
-function gcEv(path,title){const e={path:path,title:title||path,event:true};
-if(window.goatcounter&&typeof window.goatcounter.count==='function'){try{window.goatcounter.count(e)}catch(_){}}else gcQ.push(e)}
-(function flush(n){if(window.goatcounter&&typeof window.goatcounter.count==='function'){while(gcQ.length){try{window.goatcounter.count(gcQ.shift())}catch(_){}}return}if(n<40)setTimeout(()=>flush(n+1),500)})(0);
+function gcSend(e){
+  const gc=window.goatcounter;
+  if(!gc||typeof gc.url!=='function'||typeof gc.filter!=='function')return false;
+  if(gc.filter())return true;
+  const url=gc.url(e);if(!url)return true;
+  const img=new Image();img.alt='';img.setAttribute('aria-hidden','true');
+  img.style.cssText='position:absolute;bottom:0;width:1px;height:1px';
+  img.src=url;if(document.body)document.body.appendChild(img);
+  const rm=()=>{if(img.parentNode)img.parentNode.removeChild(img)};
+  img.addEventListener('load',rm);img.addEventListener('error',rm);
+  setTimeout(rm,10000);return true}
+function gcFlush(){const keep=[];while(gcQ.length){const e=gcQ.shift();if(!gcSend(e))keep.push(e)}keep.forEach(e=>gcQ.push(e))}
+function gcEv(path,title){gcQ.push({path:path,title:title||path,event:true});gcFlush()}
+(function arm(){let n=0;(function tick(){
+  const s=document.querySelector('script[data-goatcounter]');
+  if(s&&!s._gc){s._gc=1;s.addEventListener('load',gcFlush)}
+  gcFlush();
+  const ready=window.goatcounter&&typeof window.goatcounter.url==='function';
+  if((!ready||gcQ.length)&&n<240){n++;setTimeout(tick,250)}})()})();
 function isSigned(){try{return !!localStorage.getItem(SIGNED)}catch(_){return false}}
 function scoreNow(){const sc=($('score')||{}).textContent||'';return sc.replace(/\s*—.*/,'').replace('Resultado: ','')}
 const TRADES=['B / B-2 residencial general','KB-2 (dual)','Carpintería / framing','Techos (roofing)','Concreto / mampostería','Drywall / acabados','Handyman / remodelación','Otro'];
@@ -184,8 +223,30 @@ const last=i===Q.length-1;$('next').hidden=last;$('finbtn').className=last?'btn'
 if(i>=10&&!q10seen){q10seen=true;gcEv('quiz-q10','Llegó a la pregunta 11 (10 vistas)');showQ10()}
 if(i>=12&&!$('q10').hidden&&!$('q10').contains(document.activeElement))$('q10').hidden=true;
 if(i>=25&&!q25seen){q25seen=true;gcEv('quiz-q25','Llegó a la pregunta 26 (25 vistas)')}};
+const SHARE_ORIGIN='https://exnardigital.github.io/examen-contratista-az/';
+function shareLink(src){return SHARE_ORIGIN+'?src='+src}
+function shareMessage(score,src){const link=shareLink(src);
+  return score?('Saqué '+score+' en este examen de práctica GRATIS en español para la licencia de contratista de Arizona. ¿Cuánto sacas tú? '+link)
+    :('Estoy haciendo este examen de práctica GRATIS en español para la licencia de contratista de Arizona. ¿Cuánto sacas tú? '+link)}
+function waHref(score){return 'https://wa.me/?text='+encodeURIComponent(shareMessage(score,'wa-share'))}
+function scoreFraction(){const sc=(($('score')||{}).textContent)||'';const m=sc.match(/(\d+)\s*\/\s*(\d+)/);return m?m[1]+'/'+m[2]:''}
+function copyExec(text){try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(_){return false}}
+function copyText(text){if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(text).then(()=>true).catch(()=>copyExec(text));return Promise.resolve(copyExec(text))}
+function waLink(score,label){const a=document.createElement('a');a.className=score?'btn':'btn lite';a.href=waHref(score);a.target='_blank';a.rel='noopener';a.textContent=label||'Compartir por WhatsApp';a.setAttribute('aria-label','Compartir por WhatsApp');a.addEventListener('click',()=>gcEv('share-wa','Compartió por WhatsApp'));return a}
+function shareBox(score){const wrap=document.createElement('div');wrap.className='share';wrap.setAttribute('role','group');wrap.setAttribute('aria-label','Compartir con un compañero');
+  const wa=waLink(score,'Compartir por WhatsApp');wa.id='share-wa';
+  const more=document.createElement('button');more.type='button';more.className='btn s';more.id='share-more';
+  const canNative=!!navigator.share;more.textContent=canNative?'Compartir':'Copiar enlace';
+  more.setAttribute('aria-label',canNative?'Compartir el resultado':'Copiar el enlace para compartir');
+  const st=document.createElement('span');st.className='status msg';st.setAttribute('role','status');
+  more.addEventListener('click',async()=>{const msg=shareMessage(score,'share');
+    if(navigator.share){try{await navigator.share({text:msg});gcEv('share-native','Compartió (nativo)');st.textContent='';return}catch(err){if(err&&err.name==='AbortError')return}}
+    const ok=await copyText(msg);gcEv('share-copy','Copió el enlace');
+    st.textContent=ok?'Enlace copiado. Pégalo en un mensaje.':'No se pudo copiar. Usa el botón de WhatsApp.'});
+  wrap.appendChild(wa);wrap.appendChild(more);wrap.appendChild(st);return wrap}
 function showQ10(){if(isSigned())return;let c=0;for(let k=0;k<10;k++)if(ans[k]===Q[k].respuesta)c++;
 const box=$('q10');box.innerHTML=`<h3>💪 ¡Ya llevas 10 de ${Q.length}! Vas con ${c} de 10 correctas.</h3><p>Recibe gratis la guía PDF: 10 preguntas clave. Deja tu correo (opcional) y descárgala al instante; también te avisamos cuando abra el curso completo. Luego sigue con el examen.</p><div data-cap="q10"></div><button type="button" class="skip" id="q10skip">Ahora no, seguir con el examen ▶</button>`;
+const mini=document.createElement('div');mini.className='share-mini';const qa=waLink('','Compartir este examen por WhatsApp');qa.className='share-link';mini.appendChild(qa);box.appendChild(mini);
 fillCaps();box.hidden=false;$('q10skip').onclick=()=>{box.hidden=true;gcEv('q10-dismiss','Cerró el aviso de la pregunta 10');$('qt').scrollIntoView({block:'center'})};
 box.scrollIntoView({behavior:'smooth',block:'start'})}
 // resume event
@@ -194,6 +255,7 @@ const _rsgo=$('rsgo').onclick;$('rsgo').onclick=()=>{gcEv('quiz-resume','Continu
 const _finC=finish;finish=function(){_finC();const out=$('out');const old=out.querySelector('a.btn[href="#signup"]');
 const p=parseInt((($('score')||{}).textContent.match(/\((\d+)%\)/)||[])[1]||'0',10);
 gcEv('quiz-finish','Terminó el examen');gcEv('quiz-finish-'+(p>=70?'pass':'fail'),'Terminó: '+(p>=70?'aprobado':'no aprobado'));
+const share=shareBox(scoreFraction());const scoreEl=out.querySelector('#score');if(scoreEl)scoreEl.insertAdjacentElement('afterend',share);
 const card=document.createElement('div');card.className='cap';
 card.innerHTML=`<h3>${p>=70?'¡Buen resultado!':'¡Sigue practicando!'} Recibe gratis la guía PDF: 10 preguntas clave</h3><p>Deja tu correo y descárgala al instante. También te avisamos primero cuando abra el curso completo en español (con precio especial de lanzamiento).</p><div data-cap="results"></div>`;
 if(old)old.replaceWith(card);else out.insertBefore(card,out.querySelector('.fb'));fillCaps();updSticky()};
